@@ -12,13 +12,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/UAK-35/gosocketio/client"
-	"github.com/UAK-35/gosocketio/engineio"
-	"github.com/UAK-35/gosocketio/socket_protocol"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/websocket/v2"
 	"github.com/google/uuid"
+	"github.com/uak-35/gosocketio/client"
+	"github.com/uak-35/gosocketio/engineio"
+	"github.com/uak-35/gosocketio/socket_protocol"
 
 	gWebsocket "github.com/gorilla/websocket"
 )

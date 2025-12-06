@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/UAK-35/gosocketio/engineio"
-	"github.com/UAK-35/gosocketio/socket_protocol"
 	"github.com/gofiber/websocket/v2"
 	gWebsocket "github.com/gorilla/websocket"
+	"github.com/uak-35/gosocketio/engineio"
+	"github.com/uak-35/gosocketio/socket_protocol"
 )
 
 type Conn struct {

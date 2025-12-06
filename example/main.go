@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/UAK-35/gosocketio"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
+	"github.com/uak-35/gosocketio"
 )
 
 func socketIoHandle(io *socketio.Io) {
