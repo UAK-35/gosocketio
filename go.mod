@@ -1,4 +1,5 @@
-module github.com/doquangtan/socketio/v4
+//module github.com/doquangtan/socketio/v4
+module github.com/UAK-35/gosocketio/v1
 
 go 1.22.2
 

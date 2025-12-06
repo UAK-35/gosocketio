@@ -3,11 +3,12 @@ package socketio
 import (
 	"errors"
 	"io"
+	"net/url"
 	"sync"
 	"time"
 
-	"github.com/doquangtan/socketio/v4/engineio"
-	"github.com/doquangtan/socketio/v4/socket_protocol"
+	"github.com/UAK-35/gosocketio/v1/engineio"
+	"github.com/UAK-35/gosocketio/v1/socket_protocol"
 	"github.com/gofiber/websocket/v2"
 	gWebsocket "github.com/gorilla/websocket"
 )
@@ -49,16 +50,17 @@ func (c *Conn) close() error {
 
 type Socket struct {
 	sync.RWMutex
-	Id        string
-	Nps       string
-	Conn      *Conn
-	rooms     roomNames
-	listeners listeners
-	pingTime  time.Duration
-	dispose   []func()
-	Join      func(room string)
-	Leave     func(room string)
-	To        func(room string) *Room
+	Id          string
+	Nps         string
+	Conn        *Conn
+	rooms       roomNames
+	listeners   listeners
+	pingTime    time.Duration
+	dispose     []func()
+	Join        func(room string)
+	Leave       func(room string)
+	To          func(room string) *Room
+	QueryString url.Values
 }
 
 func (s *Socket) On(event string, fn eventCallback) {

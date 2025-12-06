@@ -5,7 +5,7 @@ import (
 	"io"
 	"strconv"
 
-	"github.com/doquangtan/socketio/v4/engineio"
+	"github.com/UAK-35/gosocketio/v1/engineio"
 )
 
 type PacketType int

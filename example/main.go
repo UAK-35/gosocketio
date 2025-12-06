@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/doquangtan/socketio/v4"
+	"github.com/UAK-35/gosocketio/v1"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"

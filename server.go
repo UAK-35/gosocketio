@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/doquangtan/socketio/v4/client"
-	"github.com/doquangtan/socketio/v4/engineio"
-	"github.com/doquangtan/socketio/v4/socket_protocol"
+	"github.com/UAK-35/gosocketio/v1/client"
+	"github.com/UAK-35/gosocketio/v1/engineio"
+	"github.com/UAK-35/gosocketio/v1/socket_protocol"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/websocket/v2"
@@ -106,7 +106,8 @@ func (s *Io) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			listeners: listeners{
 				list: make(map[string][]eventCallback),
 			},
-			pingTime: s.pingInterval,
+			pingTime:    s.pingInterval,
+			QueryString: r.URL.Query(),
 		}
 		defer socket.disconnect()
 		socket.dispose = append(socket.dispose, func() {
