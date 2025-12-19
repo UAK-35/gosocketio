@@ -4,9 +4,11 @@ import (
 	"context"
 	"embed"
 	"encoding/json"
+	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
 	"reflect"
 	"slices"
 	"strings"
@@ -82,6 +84,23 @@ func New() *Io {
 var upgrader = gWebsocket.Upgrader{}
 
 func (s *Io) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	outputHttpInfo := os.Getenv("OUTPUT_HTTP_INFO") == "true"
+	if outputHttpInfo {
+		fmt.Println("Request Headers:")
+		// Loop over header names
+		for name, values := range r.Header {
+			// Loop over all values for the name
+			for _, value := range values {
+				fmt.Println(name, value)
+			}
+		}
+		fmt.Println("Request Headers --- end")
+		fmt.Println("Request URL scheme:", r.URL.Scheme)
+		fmt.Println("Request URL host:", r.URL.Host)
+		fmt.Println("Request URL path:", r.URL.Path)
+		fmt.Println("Request URL query string:", r.URL.RawQuery)
+	}
+
 	header := r.Header
 	if slices.Contains(header["Connection"], "Upgrade") && header.Get("Upgrade") == "websocket" {
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
