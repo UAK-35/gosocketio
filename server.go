@@ -10,8 +10,8 @@ import (
 	"net/http"
 	"os"
 	"reflect"
-	"slices"
-	"strconv"
+	//"slices"
+	//"strconv"
 	"strings"
 	"time"
 
@@ -83,6 +83,14 @@ func New() *Io {
 }
 
 var upgrader = gWebsocket.Upgrader{}
+//var upgrader = gWebsocket.Upgrader{
+//	//ReadBufferSize:  1024,
+//	//WriteBufferSize: 1024,
+//	CheckOrigin: func(r *http.Request) bool {
+//		// Allow all origins (or implement specific origin checking)
+//		return true
+//	},
+//}
 
 func (s *Io) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	outputHttpInfo := os.Getenv("OUTPUT_HTTP_INFO") == "true"
@@ -91,22 +99,47 @@ func (s *Io) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// Loop over header names
         loopVar := 0
 		for name, values := range r.Header {
-			// Loop over all values for the name
-			for _, value := range values {
-				//fmt.Println(strconv.Itoa(loopVar+1)+") ", name, "-->", value)
-				loopVar = loopVar + 1
-			    fmt.Printf("%3d) %28s:: %s\n", loopVar, name, value)
-			}
+            // Loop over all values for the name
+            for _, value := range values {
+                //fmt.Println(strconv.Itoa(loopVar+1)+") ", name, "-->", value)
+                loopVar = loopVar + 1
+                fmt.Printf("%3d) %28s:: %s\n", loopVar, name, value)
+            }
 		}
 		fmt.Println("Request Headers --- end")
+
+		scheme := "http"
+		if r.TLS != nil {
+			scheme = "https"
+		}
+		fmt.Printf("Request URL : %v://%v%v\n", scheme, r.Host, r.RequestURI)
 		fmt.Println("Request URL scheme:", r.URL.Scheme)
 		fmt.Println("Request URL host:", r.URL.Host)
 		fmt.Println("Request URL path:", r.URL.Path)
 		fmt.Println("Request URL query string:", r.URL.RawQuery)
 	}
 
+	//r.Header.Del("X-Forwarded-For")
+	//r.Header.Del("X-Forwarded-Proto")
+	//r.Header.Del("X-Forwarded-Port")
+	//r.Header.Del("X-Amzn-Trace-Id")
+
 	header := r.Header
-	if slices.Contains(header["Connection"], "Upgrade") && header.Get("Upgrade") == "websocket" {
+
+	connectionHeaderValue := header.Get("Connection")
+	upgradeHeaderValue := header.Get("Upgrade")
+	if outputHttpInfo {
+		fmt.Println("Connection header value:", connectionHeaderValue)
+		fmt.Println("Upgrade header value:", upgradeHeaderValue)
+		fmt.Printf("valid WS connection header: %t\n", strings.EqualFold(connectionHeaderValue, "Upgrade"))
+		fmt.Printf("valid WS upgrade header: %t\n", strings.EqualFold(upgradeHeaderValue, "websocket"))
+	}
+
+	//if slices.Contains(header["Connection"], "Upgrade") && header.Get("Upgrade") == "websocket" {
+	if strings.EqualFold(connectionHeaderValue, "Upgrade") && strings.EqualFold(upgradeHeaderValue, "websocket") {
+		if outputHttpInfo {
+			fmt.Println("This is a valid socket.io request")
+		}
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 		c, err := upgrader.Upgrade(w, r, nil)
 
