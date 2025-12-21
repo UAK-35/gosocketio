@@ -11,6 +11,7 @@ import (
 	"os"
 	"reflect"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -86,12 +87,15 @@ var upgrader = gWebsocket.Upgrader{}
 func (s *Io) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	outputHttpInfo := os.Getenv("OUTPUT_HTTP_INFO") == "true"
 	if outputHttpInfo {
-		fmt.Println("Request Headers:")
+		fmt.Println("Request Headers below:")
 		// Loop over header names
+        loopVar := 0
 		for name, values := range r.Header {
 			// Loop over all values for the name
 			for _, value := range values {
-				fmt.Println(name, value)
+				//fmt.Println(strconv.Itoa(loopVar+1)+") ", name, "-->", value)
+				loopVar = loopVar + 1
+			    fmt.Printf("%3d) %28s:: %s\n", loopVar, name, value)
 			}
 		}
 		fmt.Println("Request Headers --- end")
